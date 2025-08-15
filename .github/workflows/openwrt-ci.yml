@@ -45,6 +45,8 @@ jobs:
 
           df -h
           sudo -E git clone --depth 1 https://github.com/xiaorouji/openwrt-passwall.git package/passwall
+          sudo -E apt-get -qq clean
+          df -h
       - name: Update feeds
         run: |
           ./scripts/feeds update -a
