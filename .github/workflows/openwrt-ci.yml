@@ -44,6 +44,8 @@ jobs:
           sudo -E apt-get -qq install ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential bzip2 ccache clang cmake cpio curl device-tree-compiler flex gawk gcc-multilib g++-multilib gettext genisoimage git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libfuse-dev libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libpython3-dev libreadline-dev libssl-dev libtool llvm lrzsz msmtp ninja-build p7zip p7zip-full patch pkgconf python3 python3-pyelftools python3-setuptools qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 
           df -h
+		  git clone --depth 1 https://github.com/xiaorouji/openwrt-passwall.git package/passwall
+		  
 
       - name: Update feeds
         run: |
@@ -63,6 +65,67 @@ jobs:
           CONFIG_TARGET_IMAGES_GZIP=y
           CONFIG_KERNEL_BUILD_USER="OpenWrt-CI"
           CONFIG_KERNEL_BUILD_DOMAIN="Azure"
+		  CONFIG_TARGET_x86=y
+		  CONFIG_TARGET_x86_64=y
+		  CONFIG_TARGET_x86_64_Generic=y
+		  CONFIG_TARGET_IMAGES_GZIP=y
+		  CONFIG_PACKAGE_kmod-ath=y
+		  CONFIG_ATH_USER_REGD=y
+		  CONFIG_PACKAGE_ATH_DFS=y
+		  CONFIG_PACKAGE_kmod-ath10k=y
+		  CONFIG_ATH10K_LEDS=y
+		  CONFIG_ATH10K_THERMAL=y
+		  CONFIG_PACKAGE_kmod-ath5k=y
+		  CONFIG_PACKAGE_kmod-ath9k=y
+		  CONFIG_ATH9K_SUPPORT_PCOEM=y
+		  CONFIG_PACKAGE_kmod-ath9k-common=y
+		  CONFIG_PACKAGE_kmod-ath9k-htc=y
+		  CONFIG_PACKAGE_kmod-cfg80211=y
+		  CONFIG_PACKAGE_kmod-mac80211=y
+		  CONFIG_PACKAGE_MAC80211_DEBUGFS=y
+		  CONFIG_PACKAGE_MAC80211_MESH=y
+		  CONFIG_PACKAGE_kmod-rt2800-lib=y
+		  CONFIG_PACKAGE_kmod-rt2800-usb=y
+		  CONFIG_PACKAGE_kmod-rt2x00-lib=y
+		  CONFIG_PACKAGE_kmod-rt2x00-usb=y
+		  CONFIG_PACKAGE_dnsmasq_full_dhcpv6=y
+		  CONFIG_PACKAGE_ipv6helper=y
+		  CONFIG_PACKAGE_kmod-usb3=y
+		  CONFIG_PACKAGE_kmod-usb-storage=y
+		  CONFIG_PACKAGE_kmod-usb-storage-extras=y
+		  CONFIG_PACKAGE_kmod-fs-ext4=y
+		  CONFIG_PACKAGE_kmod-fs-ntfs=y
+		  CONFIG_PACKAGE_luci-app-samba=y
+		  CONFIG_PACKAGE_luci-app-vsftpd=y
+		  CONFIG_PACKAGE_luci-app-frpc=y
+		  CONFIG_PACKAGE_luci-app-zerotier=y
+		  CONFIG_PACKAGE_luci-app-ddns=y
+		  CONFIG_PACKAGE_luci-app-wol=y
+		  CONFIG_PACKAGE_luci-app-upnp=y
+		  CONFIG_PACKAGE_luci-app-unblockmusic=y
+		  CONFIG_PACKAGE_luci-app-jd-dailybonus=y
+		  CONFIG_PACKAGE_luci-app-accesscontrol=y
+		  CONFIG_PACKAGE_luci-app-arpbind=y
+		  CONFIG_PACKAGE_luci-app-autoreboot=y
+		  CONFIG_PACKAGE_luci-app-diskman_INCLUDE_btrfs_progs=y
+		  CONFIG_PACKAGE_luci-app-diskman_INCLUDE_lsblk=y
+		  CONFIG_PACKAGE_luci-app-filetransfer=y
+		  CONFIG_PACKAGE_luci-app-firewall=y
+		  CONFIG_PACKAGE_luci-app-nlbwmon=y
+		  CONFIG_PACKAGE_luci-app-ramfree=y
+		  CONFIG_PACKAGE_luci-app-rclone_INCLUDE_rclone-webui=y
+		  CONFIG_PACKAGE_luci-app-rclone_INCLUDE_rclone-ng=y
+		  CONFIG_PACKAGE_luci-app-ttyd=y
+		  CONFIG_PACKAGE_luci-app-turboacc=y
+		  CONFIG_PACKAGE_luci-app-turboacc_INCLUDE_OFFLOADING=y
+		  CONFIG_PACKAGE_luci-app-vlmcsd=y
+		  CONFIG_PACKAGE_luci-theme-bootstrap=y
+		  CONFIG_PACKAGE_luci-app-ssr-plus=y
+		  CONFIG_PACKAGE_luci-app-ssr-plus_INCLUDE_Xray=y
+		  CONFIG_PACKAGE_htop=y
+		  CONFIG_PACKAGE_automount=y
+		  CONFIG_PACKAGE_openssh-sftp-server=y
+		  CONFIG_PACKAGE_luci-app-openclash=y
           EOF
 
           #
