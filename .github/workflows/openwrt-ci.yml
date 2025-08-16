@@ -48,22 +48,20 @@ jobs:
           pwd
           sudo -E git clone --depth 1 https://github.com/xiaorouji/openwrt-passwall.git package/passwall
           sudo -E apt-get -qq clean
-          cp -arp /home/runner/work/lede/lede /mnt/
           df -h
       - name: Update feeds
         run: |
-          cd /mnt/lede && ./scripts/feeds update -a
-          cd /mnt/lede && ./scripts/feeds install -a
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
 
       - name: Generate configuration file
         run: |
-          cd /mnt/lede && rm -f ./.config*
-          cd /mnt/lede && touch ./.config
+          rm -f ./.config*
+          touch ./.config
 
           #
           # 在 cat >> .config <<EOF 到 EOF 之间粘贴你的编译配置, 需注意缩进关系
           # 例如:
-          cd /mnt/lede
           cat >> .config <<EOF
           CONFIG_TARGET_IMAGES_GZIP=y
           CONFIG_KERNEL_BUILD_USER="OpenWrt-CI"
@@ -82,13 +80,13 @@ jobs:
 
       - name: Make download
         run: |
-          cd /mnt/lede && make download -j8 || make download -j1 V=s
-          cd /mnt/lede && rm -rf $(find ./dl/ -size -1024c)
+          make download -j8 || make download -j1 V=s
+          rm -rf $(find ./dl/ -size -1024c)
           df -h
 
       - name: Compile firmware
         run: |
-          cd /mnt/lede && make -j$(nproc) || make -j1 V=s
+          make -j$(nproc) || make -j1 V=s
           echo "======================="
           echo "Space usage:"
           echo "======================="
@@ -96,13 +94,9 @@ jobs:
           echo "======================="
           du -h ./ --max-depth=1
           du -h /mnt/openwrt/ --max-depth=1 || true
-          ls /mnt/lede/
-          pwd
-          ls /mnt/openwrt/
 
       - name: Prepare artifact
         run: |
-          cd /mnt/lede 
           mkdir -p ./artifact/firmware
           mkdir -p ./artifact/package
           mkdir -p ./artifact/buildinfo
@@ -115,25 +109,25 @@ jobs:
         uses: actions/upload-artifact@main
         with:
           name: OpenWrt_buildinfo
-          path: /mnt/lede/artifact/buildinfo/
+          path: ./artifact/buildinfo/
 
       - name: Deliver package
         uses: actions/upload-artifact@main
         with:
           name: OpenWrt_package
-          path: /mnt/lede/artifact/package/
+          path: ./artifact/package/
 
       - name: Deliver firmware
         uses: actions/upload-artifact@main
         with:
           name: OpenWrt_firmware
-          path: /mnt/lede/bin/targets/
+          path: ./bin/targets/
 
       - name: Upload release asset
         if: github.event == 'release'
         uses: svenstaro/upload-release-action@master
         with:
           repo_token: ${{ secrets.YOURTOKEN }}
-          file: /mnt/lede/artifact/firmware/*
+          file: ./artifact/firmware/*
           tag: ${{ github.ref }}
           file_glob: true
